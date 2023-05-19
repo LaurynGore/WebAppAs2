@@ -1,6 +1,13 @@
-import dotenv from "dotenv";
-import express from "express";
-import moviesRouter from "./api/movies";
+import dotenv from 'dotenv';
+import express from 'express';
+import moviesRouter from './api/movies';
+// import genresRouter from './api/genres';
+// import usersRouter from './api/users';
+// import passport from './authenticate';
+
+import './db';
+import './seedData'
+
 
 dotenv.config();
 
