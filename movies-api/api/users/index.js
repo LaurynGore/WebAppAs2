@@ -9,6 +9,16 @@ router.get("/", async (req, res) => {
   res.status(200).json(users);
 });
 
+router.get('/:id/favourites', async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+        res.status(200).json(user.favourites);
+    } else {
+        res.status(404).json({ code: 404, msg: 'Unable to find favourites' });
+    }
+});
+
+
 // register(Create)/Authenticate User
 router.post("/", async (req, res) => {
   if (req.query.action === "register") {
@@ -42,4 +52,17 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.post('/:id/favourites', async (req, res) => {
+    const newFavourite = req.body;
+    if (newFavourite && newFavourite.id) {
+        const user = await User.findById(req.params.id);
+        if (user) {
+            user.favourites.push(newFavourite);
+            user.save();
+            res.status(201).json({ code: 201, msg: "Added Favourite" });
+        } else {
+            res.status(404).json({ code: 404, msg: 'Unable to add favourites' });
+        }
+    }
+});
 export default router;
