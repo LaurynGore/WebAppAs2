@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import moviesRouter from "./api/movies";
 import usersRouter from "./api/users";
-// import passport from './authenticate';
+import passport from './authenticate';
 
 import "./db";
 import "./seedData";
@@ -25,11 +25,16 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
+app.use(errHandler);
+
+app.use(passport.initialize());
+
+// Add passport.authenticate to middleware stack for protected routes​
+app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+
 app.use("/api/movies", moviesRouter);
 
 app.use("/api/users", usersRouter);
-
-app.use(errHandler);
 
 app.listen(port, () => {
   console.info(`Server running at ${port}`);
