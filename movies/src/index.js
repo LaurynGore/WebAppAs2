@@ -16,6 +16,12 @@ import TVShows from "./pages/tvShows";
 import FavoriteTvPage from "./pages/favoriteTvPage";
 import TvContextProvider from "./contexts/tvContext";
 
+
+import LoginPage from "./loginPage";
+import AuthProvider from "./authContext";
+import AuthHeader from "./authHeader";
+import ProtectedRoutes from "./protectedRoutes";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,9 +36,12 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+      <AuthProvider>
+        <AuthHeader />
         <SiteHeader />
         <Routes>
           <Route from="*" element={<Navigate to="/" />} />
+          <Route path="/login" element={ <LoginPage />} />
         </Routes>
         <MoviesContextProvider>
           <Routes>
@@ -51,6 +60,7 @@ const App = () => {
             <Route path="/tv/favorites" element={<FavoriteTvPage />} />
           </Routes>
         </TvContextProvider>
+        </AuthProvider>
       </BrowserRouter>
 
       <ReactQueryDevtools initialIsOpen={false} />
